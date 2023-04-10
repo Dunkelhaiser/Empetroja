@@ -1,7 +1,8 @@
+import Sidebar from "./components/Sidebar/Sidebar";
 import "./scss/styles.scss";
 
 function App() {
-    return <div className="app">Hello World</div>;
+    return <Sidebar />;
 }
 
 export default App;

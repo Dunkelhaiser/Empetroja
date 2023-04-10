@@ -1,0 +1,56 @@
+@use "../../scss/abstract/mixins" as *;
+
+.sidebar {
+    @include flex($gap: 3rem);
+
+    width: fit-content;
+    height: 100%;
+    padding: 3.25rem 1.5rem 2rem 3.25rem;
+
+    color: var(--foreground);
+
+    background-color: var(--primary-bg);
+
+    span {
+        margin-top: auto;
+    }
+
+    li,
+    span {
+        @include flex($direction: row, $align: center, $gap: 1rem);
+
+        cursor: pointer;
+
+        width: 100%;
+        padding: 0.75rem 7rem 0.75rem 1rem;
+
+        font-size: 0.9rem;
+        color: #9a9bb1;
+
+        border-radius: 0.5rem;
+
+        transition: var(--hover);
+
+        svg {
+            font-size: 1.25rem;
+        }
+    }
+
+    li:hover,
+    span:hover {
+        background-color: #413e62;
+    }
+
+    li.active,
+    span.active {
+        cursor: default;
+        color: var(--foreground);
+        background-color: #484564;
+    }
+}
+
+.navigation {
+    @include flex($gap: 1rem);
+
+    list-style: none;
+}
