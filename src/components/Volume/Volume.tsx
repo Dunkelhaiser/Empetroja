@@ -3,8 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useRef, useState } from "react";
 import VolumeStyles from "./Volume.module.scss";
 
-const Volume: React.FC = () => {
-    const [volume, setVolume] = useState(50);
+interface Props {
+    volume: number;
+    setVolume: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const Volume: React.FC<Props> = ({ volume, setVolume }) => {
     const [muted, setMuted] = useState(false);
     const volumeRef = useRef<HTMLInputElement>(null);
     const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {

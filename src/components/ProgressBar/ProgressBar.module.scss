@@ -1,7 +1,7 @@
 @use "../../scss/abstract/mixins" as *;
 
 .progress_bar {
-    --value: 50;
+    --value: 0;
 
     cursor: pointer;
 
@@ -35,10 +35,16 @@
 }
 
 .time {
+    @include flex($direction: row, $align: center, $justify: space-between);
+
     width: 4.375rem;
     font-size: 0.75rem;
 
     span {
+        min-width: 26px;
+    }
+
+    .duration {
         color: var(--text-light);
     }
 }
