@@ -11,7 +11,7 @@ import vinyl from "../../images/vinyl-record.png";
 
 const Player: React.FC = () => {
     const [isPlaying, setIsPlaying] = useState(false);
-    const [volume, setVolume] = useState(50);
+    const [volume, setVolume] = useState(Number(JSON.parse(localStorage.getItem("volume") || "50")));
     const [progress, setProgress] = useState(0);
     const [duration, setDuration] = useState(0);
     const [loop, setLoop] = useState(false);
@@ -24,7 +24,6 @@ const Player: React.FC = () => {
         const getMeta = async () => {
             const tags = await id3.fromUrl(stuff);
             setMetadata(tags);
-            console.log(tags);
         };
         getMeta();
     }, []);
@@ -41,6 +40,7 @@ const Player: React.FC = () => {
         if (musicRef.current) {
             musicRef.current.volume = volume / 100;
         }
+        localStorage.setItem("volume", JSON.stringify(volume));
     }, [volume]);
 
     useEffect(() => {

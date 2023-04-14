@@ -1,6 +1,6 @@
 import { faVolumeHigh, faVolumeLow, faVolumeOff, faVolumeXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import VolumeStyles from "./Volume.module.scss";
 
 interface Props {
@@ -11,6 +11,11 @@ interface Props {
 const Volume: React.FC<Props> = ({ volume, setVolume }) => {
     const [muted, setMuted] = useState(false);
     const volumeRef = useRef<HTMLInputElement>(null);
+    useEffect(() => {
+        if (volumeRef.current) {
+            volumeRef.current.style.setProperty("--value", `${volume}`);
+        }
+    }, [volume]);
     const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setVolume(Number(e.currentTarget.value));
         setMuted(false);
