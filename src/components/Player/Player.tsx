@@ -6,7 +6,7 @@ import { ID3Tag } from "id3js/lib/id3Tag";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import Volume from "../Volume/Volume";
 import PlayerStyles from "./Player.module.scss";
-import stuff from "../../musicImg.mp3";
+import stuff from "../../music.mp3";
 import vinyl from "../../images/vinyl-record.png";
 
 const Player: React.FC = () => {
@@ -108,7 +108,7 @@ const Player: React.FC = () => {
                 <img src={vinyl} alt="Cover" />
                 <div>
                     <h2>{metadata?.title}</h2>
-                    <span>{metadata?.artist}</span>
+                    <span>{metadata?.artist || "Unknown Artist"}</span>
                 </div>
             </div>
             <div className={PlayerStyles.controls}>
