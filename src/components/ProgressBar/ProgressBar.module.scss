@@ -1,0 +1,44 @@
+@use "../../scss/abstract/mixins" as *;
+
+.progress_bar {
+    --value: 50;
+
+    cursor: pointer;
+
+    width: 100%;
+    height: 4px;
+
+    appearance: none;
+    background: linear-gradient(
+        to right,
+        var(--primary) 0%,
+        var(--primary) calc(var(--value) * 1% + 2px),
+        var(--text-light) calc(var(--value) * 1% + 2px),
+        var(--text-light) 100%
+    );
+    border-radius: 0.25rem;
+
+    &::-webkit-slider-thumb {
+        width: 15px;
+        height: 15px;
+
+        appearance: none;
+        background-color: var(--primary);
+        border-radius: 50%;
+    }
+}
+
+.progress_section {
+    @include flex($direction: row, $align: center, $gap: 0.5rem);
+
+    flex: 1;
+}
+
+.time {
+    width: 4.375rem;
+    font-size: 0.75rem;
+
+    span {
+        color: var(--text-light);
+    }
+}
