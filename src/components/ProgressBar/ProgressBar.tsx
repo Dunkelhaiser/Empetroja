@@ -39,6 +39,7 @@ const ProgressBar: React.FC<Props> = ({ progress, setProgress, duration }) => {
             <input
                 type="range"
                 value={progress}
+                disabled={!duration}
                 onChange={handleProgressChange}
                 ref={progressRef}
                 className={ProgressBarStyles.progress_bar}
