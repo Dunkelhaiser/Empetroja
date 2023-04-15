@@ -12,12 +12,13 @@
         "@fortawesome/free-solid-svg-icons": "^6.4.0",
         "@fortawesome/react-fontawesome": "^0.2.0",
         "@fvilers/disable-react-devtools": "^1.3.0",
-        "id3js": "^2.1.1",
+        "jsmediatags": "^3.9.7",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
         "uuid": "^9.0.0"
     },
     "devDependencies": {
+        "@types/jsmediatags": "^3.9.3",
         "@types/react": "^18.0.27",
         "@types/react-dom": "^18.0.10",
         "@types/sass": "^1.43.1",

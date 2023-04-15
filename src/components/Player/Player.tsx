@@ -1,32 +1,41 @@
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { faBackwardStep, faForwardStep, faHeart, faPause, faPlay, faRepeat, faShuffle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import * as id3 from "id3js";
-import { ID3Tag } from "id3js/lib/id3Tag";
+import jsmediatags from "jsmediatags";
+import { PictureType } from "jsmediatags/types";
 import ProgressBar from "../ProgressBar/ProgressBar";
 import Volume from "../Volume/Volume";
 import PlayerStyles from "./Player.module.scss";
-import stuff from "../../music.mp3";
 import vinyl from "../../images/vinyl-record.png";
+import { MusicContext } from "../../context/PlayerContext";
 
 const Player: React.FC = () => {
+    const { music } = useContext(MusicContext);
+    const [musicPlay, setMusicPlay] = useState("");
+    const [cover, setCover] = useState("");
     const [isPlaying, setIsPlaying] = useState(false);
     const [volume, setVolume] = useState(Number(JSON.parse(localStorage.getItem("volume") || "50")));
     const [progress, setProgress] = useState(0);
     const [duration, setDuration] = useState(0);
     const [loop, setLoop] = useState(false);
     const [shuffle, setShuffle] = useState(false);
-    const [metadata, setMetadata] = useState<ID3Tag | null>(null);
+    const [metadata, setMetadata] = useState<{ title?: string; artist?: string; picture?: PictureType } | null>(null);
 
     const musicRef = useRef<HTMLAudioElement>(null);
 
     useEffect(() => {
-        const getMeta = async () => {
-            const tags = await id3.fromUrl(stuff);
-            setMetadata(tags);
-        };
-        getMeta();
-    }, []);
+        if (music) {
+            jsmediatags.read(music, {
+                onSuccess(tag) {
+                    const { title, artist, picture } = tag.tags;
+                    setMetadata({ title, artist, picture });
+                },
+                onError() {
+                    setMetadata({ title: music.name, artist: "", picture: undefined });
+                },
+            });
+        }
+    }, [music]);
 
     useEffect(() => {
         if (isPlaying) {
@@ -46,20 +55,20 @@ const Player: React.FC = () => {
     useEffect(() => {
         if (musicRef.current) {
             const { currentTime } = musicRef.current;
-            const newTime = (progress / 100) * musicRef.current.duration;
-            const timeDifference = Math.abs(currentTime - newTime);
+            const newTime = Math.floor((progress / 100) * musicRef.current.duration);
+            const timeDifference = Math.abs(Math.floor(currentTime) - newTime);
 
             if (timeDifference > 1) {
                 musicRef.current.currentTime = newTime;
             }
         }
-    }, [progress]);
+    }, [progress, musicRef]);
 
     const handleTimeUpdate = () => {
         if (musicRef.current) {
             const { currentTime } = musicRef.current;
             const currentProgress = (currentTime / duration) * 100;
-            setProgress(currentProgress);
+            setProgress(currentProgress || 0);
         }
     };
 
@@ -93,10 +102,31 @@ const Player: React.FC = () => {
         };
     }, []);
 
+    useEffect(() => {
+        if (music) {
+            const reader = new FileReader();
+            reader.readAsDataURL(music);
+            reader.onload = () => {
+                setMusicPlay(reader.result as string);
+            };
+        }
+    }, [music]);
+
+    useEffect(() => {
+        if (metadata?.picture) {
+            const { data, format } = metadata.picture;
+            let base64String = "";
+            for (let i = 0; i < data.length; i++) {
+                base64String += String.fromCharCode(data[i]);
+            }
+            setCover(`data:${format};base64,${window.btoa(base64String)}`);
+        } else setCover("");
+    }, [metadata]);
+
     return (
         <section className={PlayerStyles.player}>
             <audio
-                src={stuff}
+                src={musicPlay}
                 controls
                 hidden
                 ref={musicRef}
@@ -105,9 +135,9 @@ const Player: React.FC = () => {
                 loop={loop}
             />
             <div className={PlayerStyles.info}>
-                <img src={vinyl} alt="Cover" />
+                <img src={cover || vinyl} alt="Cover" />
                 <div>
-                    <h2>{metadata?.title}</h2>
+                    <h2>{metadata?.title || "Unknown Track"}</h2>
                     <span>{metadata?.artist || "Unknown Artist"}</span>
                 </div>
             </div>
@@ -118,7 +148,7 @@ const Player: React.FC = () => {
                     className={shuffle ? PlayerStyles.active : PlayerStyles.disabled}
                 />
                 <FontAwesomeIcon icon={faBackwardStep} />
-                <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} onClick={() => setIsPlaying((prev) => !prev)} />
+                <FontAwesomeIcon icon={isPlaying ? faPause : faPlay} onClick={() => (music ? setIsPlaying((prev) => !prev) : "")} />
                 <FontAwesomeIcon icon={faForwardStep} />
                 <FontAwesomeIcon
                     icon={faRepeat}
