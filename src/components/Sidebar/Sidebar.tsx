@@ -8,11 +8,11 @@ const Sidebar: React.FC = () => {
             <h2>Empetroja</h2>
             <nav>
                 <ul className={SidebarStyles.navigation}>
-                    <li className={SidebarStyles.active}>
+                    <li>
                         <FontAwesomeIcon icon={faHome} />
                         Home
                     </li>
-                    <li>
+                    <li className={SidebarStyles.active}>
                         <FontAwesomeIcon icon={faMusic} /> Music
                     </li>
                     <li>
