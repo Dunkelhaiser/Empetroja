@@ -1,0 +1,21 @@
+.table {
+    width: 100%;
+    text-align: left;
+
+    thead {
+        color: var(--text-light);
+    }
+
+    td {
+        cursor: pointer;
+        padding: 0.75rem 0;
+    }
+
+    td,
+    th {
+        &:last-child {
+            padding-right: 1rem;
+            text-align: right;
+        }
+    }
+}

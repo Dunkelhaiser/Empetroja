@@ -32,6 +32,10 @@
 
         &.disabled {
             color: var(--text-light);
+
+            &:hover {
+                color: var(--background);
+            }
         }
     }
 }

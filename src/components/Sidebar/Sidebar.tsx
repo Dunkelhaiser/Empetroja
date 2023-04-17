@@ -5,7 +5,7 @@ import SidebarStyles from "./Sidebar.module.scss";
 const Sidebar: React.FC = () => {
     return (
         <aside className={SidebarStyles.sidebar}>
-            <h1>Empetroja</h1>
+            <h2>Empetroja</h2>
             <nav>
                 <ul className={SidebarStyles.navigation}>
                     <li className={SidebarStyles.active}>

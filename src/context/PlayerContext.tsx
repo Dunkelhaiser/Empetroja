@@ -3,6 +3,7 @@ import { createContext, useMemo, useState } from "react";
 type MusicContextType = {
     music: File | null;
     uploadMusic: (event: React.ChangeEvent<HTMLInputElement>) => void;
+    selectMusic: (file: File) => void;
 };
 
 interface Props {
@@ -12,6 +13,7 @@ interface Props {
 const iMusicContextState = {
     music: null,
     uploadMusic: () => {},
+    selectMusic: () => {},
 };
 
 export const MusicContext = createContext<MusicContextType>(iMusicContextState);
@@ -25,10 +27,15 @@ export const MusicContextProvider: React.FC<Props> = ({ children }) => {
         setMusic(file);
     };
 
+    const selectMusic = (file: File) => {
+        setMusic(file);
+    };
+
     const values = useMemo(
         () => ({
             music,
             uploadMusic,
+            selectMusic,
         }),
         [music, uploadMusic]
     );

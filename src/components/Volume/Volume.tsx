@@ -24,11 +24,11 @@ const Volume: React.FC<Props> = ({ volume, setVolume }) => {
         }
     };
     const iconClick = () => {
-        setVolume(volume ? 0 : 50);
-        setMuted(!!volume);
-        if (volumeRef.current) {
-            volumeRef.current.style.setProperty("--value", `${volume ? 0 : 50}`);
-        }
+        // setVolume(volume ? 0 : 50);
+        setMuted((prev) => !prev);
+        // if (volumeRef.current) {
+        //     volumeRef.current.style.setProperty("--value", `${volume ? 0 : 50}`);
+        // }
     };
     const icon = volume === 0 ? faVolumeOff : volume < 50 ? faVolumeLow : faVolumeHigh;
     const mutedIcon = muted ? faVolumeXmark : icon;
